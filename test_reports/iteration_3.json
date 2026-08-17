@@ -1,0 +1,21 @@
+{
+  "summary": "Focused regression on login flow (backend + UI) after Login.jsx rewrite. Both backend and UI now behave as designed: valid creds -> 200 + JWT + redirect + toast; invalid creds -> 401 with detailed string 'Usuario o contraseña incorrectos' shown both as toast and inline block (data-testid login-error-msg). No credentials/help block or Autocompletar button is present on /login. Cache-buster nocache=<ts> used during navigation.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": ["/app/backend/tests/test_new_features.py", "/app/test_reports/pytest/new_features.xml"],
+  "action_items": [
+    "The reported user issue ('Verifique credenciales' fallback) is NOT reproducible on the current deployed frontend. It is stale browser cache on the user side. Recommend a hard reload (Ctrl+Shift+R) or opening the app in an incognito window; asset filenames are hashed so a hard refresh will fetch new bundle."
+  ],
+  "critical_code_review_comments": [
+    "Login.jsx correctly parses response.data.detail as string, array (Pydantic validation) and object (msg field), with sensible fallback to `Error <status>: <statusText>`. No hardcoded credentials or dev-only autofill exposed.",
+    "Consider adding a small version/build stamp in the footer of /login to help end-users confirm they are on the latest bundle when they report auth issues."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@cesariglesias.com / admin123 (from /app/memory/test_credentials.md) - verified working",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Login is fully working end-to-end. If the user still reports the old 'Verifique credenciales' text, it is definitively a client-side cache issue (the current bundle no longer contains that string). Regression on /empleados, /reportes, /entregas, /devoluciones was NOT re-run in this iteration since scope was limited to login; iteration_2 already validated them as PASS.",
+  "rca of the issue": "Root cause: user's browser is serving an outdated Login.jsx bundle that contained the legacy fallback message 'No se pudo iniciar sesión. Verifique credenciales.' and the 'Credenciales de administrador' helper block with an Autocompletar button. The current source (/app/frontend/src/pages/Login.jsx) has neither: it renders backend detail verbatim into a red inline block (data-testid=login-error-msg) and shows no dev helpers. Fresh navigation with ?nocache=<ts> confirms 200 + redirect + toast for valid creds and inline 'Usuario o contraseña incorrectos' for wrong password. Mitigation: instruct user to hard-refresh (Ctrl+Shift+R) or clear site data / use incognito; ensure Cache-Control headers on index.html are no-cache (hashed JS/CSS chunks handle their own busting)."
+}

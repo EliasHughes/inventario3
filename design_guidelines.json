@@ -1,0 +1,117 @@
+{
+  "project_name": "Cisa TI",
+  "client_brand": "César Iglesias S.A.",
+  "app_type": "Enterprise ITAM Dashboard (Internal SaaS)",
+  "language": "es",
+  "theme_strategy": {
+    "mode": "light",
+    "rationale": "For data-dense enterprise dashboards, a light theme reduces eye strain during standard office hours. Dark mode can be supported via toggle, but the default must be light.",
+    "archetype": "Archetype 4: Swiss & High-Contrast adapted with Corporate Red."
+  },
+  "colors": {
+    "rationale": "Derived from César Iglesias's corporate identity. The dominant red is used strictly as an action/accent color to avoid visual fatigue, with stark whites and cool grays structuring the dense data.",
+    "hsl_tokens": {
+      "background": "0 0% 100%",
+      "foreground": "222 47% 11%",
+      "card": "0 0% 100%",
+      "card-foreground": "222 47% 11%",
+      "popover": "0 0% 100%",
+      "popover-foreground": "222 47% 11%",
+      "primary": "353 100% 40%",
+      "primary-foreground": "0 0% 100%",
+      "secondary": "210 40% 96%",
+      "secondary-foreground": "222 47% 11%",
+      "muted": "210 40% 96%",
+      "muted-foreground": "215 16% 47%",
+      "accent": "353 100% 95%",
+      "accent-foreground": "353 100% 40%",
+      "destructive": "0 84% 60%",
+      "destructive-foreground": "210 40% 98%",
+      "border": "214 32% 91%",
+      "input": "214 32% 91%",
+      "ring": "353 100% 40%"
+    },
+    "charts": {
+      "palette": [
+        "#CC0000",
+        "#1D4ED8",
+        "#047857",
+        "#D97706",
+        "#6D28D9"
+      ],
+      "rationale": "High-contrast colors for categorical data. Red is used for the primary brand or critical metrics, while other distinct colors support variety without clashing."
+    }
+  },
+  "typography": {
+    "headings": {
+      "family": "Chivo, sans-serif",
+      "weights": ["400", "700", "900"],
+      "usage": "Dashboard titles, metric numbers, and modal headers. Provides a solid, trustworthy corporate edge.",
+      "import": "@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@400;700;900&display=swap');"
+    },
+    "body": {
+      "family": "'IBM Plex Sans', sans-serif",
+      "weights": ["400", "500", "600"],
+      "usage": "All data tables, forms, badges, and general UI text. Engineered specifically for complex data and UI clarity.",
+      "import": "@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap');"
+    }
+  },
+  "layouts": {
+    "global_structure": "Modified F-Pattern Layout. Left collapsible sidebar (260px expanded, 64px collapsed). Top sticky header with global search, user profile, and context actions. Main content area takes the rest.",
+    "dashboard_grid": "High density. Top row uses a 4-column or 5-column grid for primary state KPIs. Below that, a 3-column bento structure where col-span-2 is for trend charts and col-span-1 for alerts/worklists.",
+    "spacing": "Dense but optical. Use p-4 for cards, p-2 or p-3 for table cells. Provide ample breathing room (gap-6) between main dashboard sections."
+  },
+  "component_styling": {
+    "sidebar": "Flat white background, 1px right border (border-border). Active menu items should have a soft red background (accent) with red text and a 2px solid red left border indicator.",
+    "topbar": "Glassmorphism or solid white. 1px bottom border. Must include a prominent global search input (Command+K shortcut).",
+    "kpi_cards": "Cardless or flat cards. 1px subtle border, no heavy drop shadows. Small drop-shadow-sm on hover. Include a 24x24 lucide icon in the top right, muted.",
+    "data_tables": "Dense rows. Sticky header with muted background. Use striped rows lightly if > 10 rows. Add explicit column sorting and a global table filter. Use Lucide icons for actions.",
+    "badges": "Status badges must use high-contrast soft backgrounds. Active/Available: bg-emerald-100 text-emerald-800. In Maintenance: bg-amber-100 text-amber-800. Expired/Broken: bg-red-100 text-red-800. Assigned: bg-blue-100 text-blue-800.",
+    "buttons": "Pill-shaped (rounded-full) or moderately rounded (rounded-md) for enterprise feel. Primary button uses corporate red. Ensure hover states darken the red (hover:bg-red-700) with clear text color.",
+    "forms_modals": "Slide-over panels (Sheet) for complex creations (e.g., adding an asset) to keep context, or standard Modals (Dialog) for quick confirmations. Forms must use Shadcn Select, DatePicker, and Inputs with clear error states in Spanish.",
+    "charts": "Recharts. Keep them clean, remove heavy grid lines (use stroke-dasharray). Ensure tooltips have a white background and 1px border."
+  },
+  "micro_interactions": {
+    "hover": "Subtle translations (-translate-y-[1px]) and shadow-sm for clickable cards. Table rows should get bg-muted/50 on hover.",
+    "transitions": "Avoid universal 'transition-all'. Use 'transition-colors duration-200' for buttons/badges, and 'transition-transform' for icons.",
+    "feedback": "Use Sonner for toasts. Position: top-right. Success/Error messages must be explicit in Spanish (e.g., 'Activo registrado correctamente')."
+  },
+  "accessibility": {
+    "contrast": "Ensure IBM Plex Sans text in tables meets 4.5:1. Primary red buttons must have pure white text.",
+    "focus": "Use focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 for all inputs and buttons."
+  },
+  "testing": {
+    "data_testid": "ALL interactive elements must have a data-testid attribute in kebab-case. Examples: data-testid='login-submit-button', data-testid='sidebar-nav-inventory', data-testid='asset-table-row-1'."
+  },
+  "media": {
+    "image_urls": {
+      "login_background": {
+        "url": "https://images.pexels.com/photos/5480781/pexels-photo-5480781.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Clean modern server room with red accents, fitting for the login screen background of an ITAM platform.",
+        "category": "background"
+      }
+    }
+  },
+  "icons": {
+    "library": "lucide-react",
+    "rationale": "Standard, clean, scales perfectly with Tailwind. Good for dense enterprise dashboards."
+  },
+  "instructions_to_main_agent": [
+    "Install the required fonts: Chivo and IBM Plex Sans in the main CSS.",
+    "Apply the HSL color tokens to tailwind.config.js / global css. Ensure primary maps to the corporate red.",
+    "Build the dashboard layout with a collapsible sidebar and sticky top navigation.",
+    "Do NOT use 'transition: all' in global CSS. Apply specific transitions to interactive elements.",
+    "Ensure all text is in Spanish as requested by the client (César Iglesias S.A.).",
+    "Implement the UI in a modular way (components/ui/...) using Shadcn.",
+    "Add 'data-testid' to all buttons, links, form inputs, and key UI elements for testing.",
+    "For the login page, use the provided login_background image as a split-screen or full-background with a glassmorphism card."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "You tend to converge toward generic, 'on distribution' outputs. Make this dashboard look like a premium, 2026-era enterprise SaaS tool, not a default Bootstrap template.",
+    "Do not center align the app container in App.css. Dashboards are full-width and left-aligned.",
+    "Use 2-3x more spacing (p-6, p-8) around major layout blocks, while keeping data tables dense (p-2).",
+    "Ensure hover states explicitly declare text colors (e.g., hover:bg-slate-900 hover:text-white).",
+    "Never use generic AI emojis. Use Lucide icons.",
+    "Use Sonner for toast notifications."
+  ]
+}

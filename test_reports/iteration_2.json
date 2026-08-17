@@ -1,0 +1,30 @@
+{
+  "summary": "Retested login fix + overdue-delivery visual markers. Backend regression 27/27 PASS. Login UI works with correct credentials and shows backend detail message on 401. /devoluciones shows 'Entregas pendientes de devolución' with red row (bg-red-50), pending overdue badge '3 día(s) vencida', global counter '1 VENCIDA(S)'. /entregas marks the overdue row (data-overdue=true, bg rgb(254,242,242)), shows 'VENCIDA 3D' badge, and StatusBadge switches to 'Dañado'. Future-dated delivery correctly stays data-overdue=false. Inline 'Devolver' button successfully registers the return and moves the row to 'Devoluciones registradas'.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Return dialog / other DialogContent", "issues": ["A11y warning still present: 'Missing Description or aria-describedby={undefined} for {DialogContent}'"]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_new_features.py",
+    "/app/test_reports/pytest/iter2_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Assignments.jsx is 465 lines and now bundles Entregas + Devoluciones + helpers; consider splitting into pages/entregas.jsx and pages/devoluciones.jsx and a shared /lib/overdue.js for isOverdue/daysOverdue.",
+    "isOverdue uses client's local clock. For clients in tz far from server date, expected_return date could be off by 1 day. Consider normalizing expected_return in UTC or comparing YYYY-MM-DD strings.",
+    "StatusBadge for overdue uses value='danado' (Dañado) - semantically 'Vencida' would be more accurate than 'Dañado', which conflates physical damage with schedule breach.",
+    "Login.jsx: on 401 the toast reads detail correctly, but there is no per-field error state (e.g., highlighting the password input). Consider aria-live and inline error for a11y."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (27/27)", "frontend": "100% of requested flows"},
+  "test_credentials": "admin@cesariglesias.com / Admin2026! (works after main-agent password reset)",
+  "seed_data_creation": "Created TEST_OD_* department, TEST-OD-DEFxx employee, two assets (TEST OD Laptop / TEST OD Laptop2) and two deliveries: one with expected_return 3 days ago (id 5781c508-957f-40b2-8fa6-295794895aca, now returned during test) and one with expected_return +10 days (id 9231334f-2123-437b-a550-351254f3cd7f, still active). Seed script: /tmp/seed_overdue.py (non-persistent; recreate if needed).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Both reported bugs are fixed and verified end-to-end. Consider moving seed script into /app/scripts if it will be reused. Remaining minor items: split Assignments.jsx, add DialogDescription for a11y warnings, and reconsider using 'Dañado' status for overdue rows.",
+  "rca of the issue": "Bug1: admin password_hash in Mongo was out of sync with .env value; fixed by main agent resetting hash. Login.jsx now surfaces backend detail (`Usuario o contraseña incorrectos`) instead of generic message. Bug2: previously there was no visual cue for expected_return < today; new helpers isOverdue/daysOverdue in Assignments.jsx apply bg-red-50 + badges + status='Dañado' on the row, plus a global counter and dedicated pending section in /devoluciones."
+}
